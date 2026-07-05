@@ -1,16 +1,18 @@
 /* ===== Hikari Wellness — calm, minimal Reiki landing ===== */
 
 :root {
-  --gold:        #9e937a;   /* from the logo */
-  --gold-deep:   #7d735c;
+  --gold:        #b39566;   /* warmed from the logo, so "light" is felt */
+  --gold-deep:   #97794c;
+  --gold-glow:   #e7c98a;   /* luminous highlight for the light signature */
   --ink:         #3a362e;
   --ink-soft:    #6b6557;
   --cream:       #faf7f1;
   --cream-deep:  #f1ece1;
+  --dawn:        #fffaf0;   /* warm near-white light source */
   --line:        #e6ddcd;
   --white:       #ffffff;
 
-  --serif: "Cormorant Garamond", Georgia, serif;
+  --serif: "Shippori Mincho", Georgia, serif;
   --sans:  "Jost", "Helvetica Neue", Arial, sans-serif;
 
   --maxw: 1100px;
@@ -94,17 +96,54 @@ img { display: block; max-width: 100%; }
 
 /* ===== Hero ===== */
 .hero {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  min-height: 88vh;
+  min-height: 92vh;
   padding: 5rem clamp(1.25rem, 5vw, 3rem);
+  overflow: hidden;
   background:
-    radial-gradient(120% 90% at 50% -10%, #fffdf9 0%, var(--cream) 45%, var(--cream-deep) 100%);
+    radial-gradient(120% 90% at 50% 8%, var(--dawn) 0%, var(--cream) 42%, var(--cream-deep) 100%);
+}
+
+/* the light source: a soft, breathing dawn glow behind the headline */
+.hero__glow {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  width: min(78vw, 640px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(231, 201, 138, 0.55) 0%,
+    rgba(231, 201, 138, 0.22) 35%,
+    rgba(231, 201, 138, 0) 68%);
+  filter: blur(8px);
+  animation: breathe 9s var(--ease) infinite;
+  pointer-events: none;
+}
+
+/* the signature glyph: 光 (light) held large and faint, the source made literal */
+.hero__kanji {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -54%);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(20rem, 62vw, 46rem);
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.06;
+  user-select: none;
+  pointer-events: none;
 }
 
 .hero__inner {
+  position: relative;
   max-width: 720px;
   animation: rise 1s var(--ease) both;
 }
@@ -162,8 +201,9 @@ img { display: block; max-width: 100%; }
 
 .section__title {
   font-family: var(--serif);
-  font-weight: 400;
+  font-weight: 500;
   font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+  line-height: 1.18;
   margin: 0 0 1.6rem;
   color: var(--ink);
 }
@@ -177,6 +217,48 @@ img { display: block; max-width: 100%; }
 
 .about { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
+.about__inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 6vw, 5.5rem);
+  align-items: center;
+}
+
+/* luminous glyph: 光 sitting in its own halo of light */
+.about__glyph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  justify-self: center;
+}
+
+.about__kanji {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(7rem, 16vw, 12rem);
+  line-height: 1;
+  color: var(--gold-deep);
+  background: radial-gradient(circle at 50% 42%,
+    var(--gold-glow) 0%, rgba(231, 201, 138, 0) 62%);
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border-radius: 50%;
+}
+
+.about__reading {
+  font-size: 0.74rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.about__body { text-align: left; }
+
+/* the shared title/text helpers default to centered; realign them here */
+.about__body .section__text { margin: 0; max-width: 46ch; }
+
 /* ===== Offering cards ===== */
 .cards {
   display: grid;
@@ -187,16 +269,20 @@ img { display: block; max-width: 100%; }
 }
 
 .card {
+  position: relative;
   background: var(--cream);
   border: 1px solid var(--line);
   border-radius: 14px;
-  padding: 2.2rem 1.9rem;
-  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  padding: 2.4rem 1.9rem;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px -28px rgba(125, 115, 92, 0.55);
+  border-color: var(--gold-glow);
+  box-shadow:
+    0 22px 44px -30px rgba(151, 121, 76, 0.5),
+    0 0 34px -12px rgba(231, 201, 138, 0.55);
 }
 
 .card__title {
@@ -283,10 +369,33 @@ img { display: block; max-width: 100%; }
   margin: 0;
 }
 
+/* ===== Responsive ===== */
+@media (max-width: 720px) {
+  .about__inner {
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 8vw, 3rem);
+    text-align: center;
+  }
+  .about__body { text-align: center; }
+  .about__body .section__text { margin: 0 auto; }
+}
+
+@media (max-width: 560px) {
+  .nav__logo { height: 38px; }
+  .nav__links { gap: 1.1rem; }
+  .nav__links a { font-size: 0.7rem; letter-spacing: 0.12em; }
+}
+
 /* ===== Motion ===== */
 @keyframes rise {
   from { opacity: 0; transform: translateY(22px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* a slow, breath-paced swell of light — matched to a calm exhale */
+@keyframes breathe {
+  0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.08); }
 }
 
 @media (prefers-reduced-motion: reduce) {
