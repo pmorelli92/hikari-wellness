@@ -67,10 +67,13 @@ img { display: block; max-width: 100%; }
 
 /* ===== Buttons ===== */
 .btn {
+  display: inline-block;
   font-family: var(--sans);
   font-size: 0.8rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
   padding: 0.95rem 2.2rem;
   border-radius: 999px;
   border: 1px solid transparent;
@@ -84,19 +87,9 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 10px 24px -12px rgba(125, 115, 92, 0.7);
 }
 
-.btn--primary:not(:disabled):hover {
+.btn--primary:hover {
   background: var(--gold-deep);
   transform: translateY(-2px);
-}
-
-.btn:disabled,
-.btn[aria-disabled="true"] {
-  background: var(--cream-deep);
-  color: var(--ink-soft);
-  border-color: var(--line);
-  box-shadow: none;
-  cursor: not-allowed;
-  opacity: 0.85;
 }
 
 /* ===== Hero ===== */
@@ -146,13 +139,6 @@ img { display: block; max-width: 100%; }
   flex-direction: column;
   align-items: center;
   gap: 0.9rem;
-}
-
-.hero__soon {
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold-deep);
 }
 
 /* ===== Sections ===== */
